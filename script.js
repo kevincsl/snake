@@ -43,7 +43,7 @@ function gameLoop() {
 
         // 繪製遊戲物件
         for (let i = 0; i < snake.length; i++) {
-            ctx.fillStyle = 'green';
+            ctx.fillStyle = 'yellow';
             ctx.fillRect(snake[i].x, snake[i].y, 10, 10);
         }
 
