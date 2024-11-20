@@ -32,8 +32,13 @@ function updateInfo() {
     scoreElement.textContent = `分數: ${score}`;
 }
 
+// 在原有的 gameLoop 函數中加入遊戲狀態控制
+let gameActive = true;
+
 // 遊戲迴圈
 function gameLoop() {
+    if (!gameActive) return;
+
     setTimeout(() => {
         // 清除畫布
         ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -56,14 +61,14 @@ function gameLoop() {
 
         // 碰撞偵測
         if (head.x < 0 || head.x >= canvas.width || head.y < 0 || head.y >= canvas.height) {
-            alert('Game Over! Your score: ' + score);
-            resetGame();
+            gameActive = false;
+            return;
         }
 
         for (let i = 1; i < snake.length; i++) {
             if (head.x === snake[i].x && head.y === snake[i].y) {
-                alert('Game Over! Your score: ' + score);
-                resetGame();
+                gameActive = false;
+                return;
             }
         }
 
@@ -79,19 +84,36 @@ function gameLoop() {
     }, gameSpeed);
 }
 
+// 定義重置遊戲函數
 function resetGame() {
+    // 重置蛇的位置和長度
     snake = [{ x: 100, y: 100 }];
+    
+    // 重置移動方向
     dx = 10;
     dy = 0;
+    
+    // 重置分數
     score = 0;
-    startTime = new Date(); // 重置遊戲開始時間
+    
+    // 重置開始時間
+    startTime = new Date();
+    
+    // 重新生成食物
     generateFood();
+    
+    // 更新顯示
     updateInfo();
+    
+    // 如果遊戲結束了，重新開始遊戲循環
+    if (!gameActive) {
+        gameActive = true;
+        gameLoop();
+    }
 }
 
+// 綁定點擊事件
 restartButton.addEventListener('click', resetGame);
-
-gameLoop();
 
 // 監聽鍵盤事件
 document.addEventListener('keydown', (e) => {
@@ -109,3 +131,6 @@ document.addEventListener('keydown', (e) => {
         dy = 0;
     }
 });
+
+// 初始啟動遊戲
+gameLoop();
