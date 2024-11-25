@@ -117,7 +117,7 @@ restartButton.addEventListener('click', resetGame);
 
 // 監聽鍵盤事件
 document.addEventListener('keydown', (e) => {
-    if (e.key === 'ArrowUp' && dy === 0) {
+    if (e.key === 'ArrowUp' && dy === 0 ) {
         dx = 0;
         dy = -10;
     } else if (e.key === 'ArrowDown' && dy === 0) {
